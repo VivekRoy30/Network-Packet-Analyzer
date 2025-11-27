@@ -4,7 +4,7 @@ import pickle
 from preprocess import preprocess
 
 def load_model():
-    with open("../models/iso_forest.pkl", "rb") as f:
+    with open("models/iso_forest.pkl", "rb") as f:
         return pickle.load(f)
 
 def analyze(file_path):
@@ -21,15 +21,30 @@ def analyze(file_path):
 
     anomalies = df[df["anomaly"] == -1]
 
-    print("\n===== Network Packet Analyzer =====")
-    print(f"Total packets: {len(df)}")
-    print(f"Anomalies detected: {len(anomalies)}")
-    print(f"Anomaly percentage: {round((len(anomalies)/len(df))*100, 2)}%")
+    # Colors
+    GREEN = "\033[92m"
+    RED = "\033[91m"
+    CYAN = "\033[96m"
+    YELLOW = "\033[93m"
+    RESET = "\033[0m"
 
-    print("\n===== Sample Anomalous Packets =====")
+    print(f"\n{CYAN}===== Network Packet Analyzer ====={RESET}")
+
+    print(f"{YELLOW}Total packets:{RESET} {len(df)}")
+
+    if len(anomalies) > 0:
+        print(f"{RED}Anomalies detected:{RESET} {len(anomalies)}")
+    else:
+        print(f"{GREEN}Anomalies detected: 0{RESET}")
+
+    anom_percent = round((len(anomalies)/len(df))*100, 2)
+    color = RED if anom_percent > 0 else GREEN
+    print(f"{color}Anomaly percentage:{RESET} {anom_percent}%")
+
+    print(f"\n{CYAN}===== Sample Anomalous Packets ====={RESET}")
     print(anomalies.head(10))
 
-    print("\nDone.\n")
+    print(f"\n{GREEN}Done.{RESET}\n")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Network Packet Analyzer CLI")
