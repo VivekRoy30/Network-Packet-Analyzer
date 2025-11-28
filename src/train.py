@@ -12,7 +12,7 @@ clean = preprocess(df)
 # 3. Train Isolation Forest
 model = IsolationForest(
     n_estimators=200,
-    contamination=0.02,   # approx 2% anomalies
+    contamination=0.02, # approx 2% anomalies
     random_state=42
 )
 
